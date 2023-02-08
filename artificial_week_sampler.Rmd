@@ -1,0 +1,77 @@
+---
+title: "Random week sample generator"
+author: "Vivien Benert"
+date: "2023-02-06"
+output:
+  word_document: default
+  pdf_document: default
+  html_document: default
+editor_options:
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+# library(dplyr)
+# library(lubridate)
+```
+
+# Function to draw artificial random week from sample period
+
+The function needs a start date and an end date, provided in the format yyyy-mm-dd. Additionally, there is the option to specify whether the sample should be drawn from the whole week or only from weekdays. Default is set to take the whole week as the basis for the random sample, including weekends. If weekends should be excluded (i.e. if the random sample should only inlcude mondays to fridays, set the optional weekends-argument to FALSE).
+
+```{r}
+sample_week <- function(start.date, end.date, weekend=TRUE) {
+ require(dplyr)
+ require(lubridate)
+  # Create sequence of days for sample period
+  df <- as.data.frame(seq(ymd(start.date), ymd(end.date), by='days'))
+  colnames(df) <- "date"
+  
+  # Create weekday and year variable with lubridate 
+  df$weekday <- wday(df$date)
+  df$year <- year(df$date)
+  df$week <- week(df$date)
+  
+  # Select only weekdays, only if weekends=FALSE
+  if (weekend==FALSE) {
+    x <- 5
+  } else {
+    x <- 7
+  }
+
+  df <- df[which(df$weekday<=x),]
+  
+  # Subset years, returns a list of dfs
+  df_list <- split(df, f=df$year)
+  
+  # Create empty data frame
+  sample <- data.frame(matrix(ncol=4, nrow=0))
+  colnames(sample) <- c("date", "weekday", "year", "week")
+
+  for (i in 1:length(df_list)) {
+    x <- df_list[[i]]
+    z <- x %>% 
+      group_by(week) %>% 
+      sample_n(1) %>% 
+      ungroup()
+    sample <- rbind(sample, z)
+    }
+
+  return(sample)
+}
+```
+
+# Use function by providing start date and end date as yyyy-mm-dd format
+
+Don't forget to set.seed if sample needs to be reproducible.
+
+```{r}
+set.seed(12345)
+sample_weekdays <- sample_week('1955-06-08', '2023-01-01')
+sample_weekends <- sample_week('1989-05-12', '2022-10-30', weekend = FALSE)
+```
