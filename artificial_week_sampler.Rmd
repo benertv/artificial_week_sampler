@@ -66,12 +66,13 @@ sample_week <- function(start.date, end.date, weekend=TRUE) {
 }
 ```
 
-# Use function by providing start date and end date as yyyy-mm-dd format
-
-Don't forget to set.seed if sample needs to be reproducible.
 
 ```{r}
-set.seed(12345)
-sample_weekdays <- sample_week('1955-06-08', '2023-01-01')
-sample_weekends <- sample_week('1989-05-12', '2022-10-30', weekend = FALSE)
+# Use function by providing start date and end date as yyyy-mm-dd format
+# Don't forget to set.seed if sample needs to be reproducible.
+
+# set.seed(12345)
+
+# sample_week <- sample_week('1955-06-08', '2023-01-01')
+# sample_weekdays <- sample_week('1989-05-12', '2022-10-30', weekend = FALSE)
 ```
