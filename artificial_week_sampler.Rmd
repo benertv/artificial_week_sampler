@@ -16,8 +16,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 ```{r}
-# library(dplyr)
-# library(lubridate)
+library(dplyr)
+library(lubridate)
 ```
 
 # Function to draw artificial random week from sample period
@@ -71,8 +71,8 @@ sample_week <- function(start.date, end.date, weekend=TRUE) {
 # Use function by providing start date and end date as yyyy-mm-dd format
 # Don't forget to set.seed if sample needs to be reproducible.
 
-# set.seed(12345)
+set.seed(12345)
 
-# sample_week <- sample_week('1955-06-08', '2023-01-01')
-# sample_weekdays <- sample_week('1989-05-12', '2022-10-30', weekend = FALSE)
+sample_weeks <- sample_week('1955-06-08', '2023-01-01')
+sample_weekdays <- sample_week('1989-05-12', '2022-10-30', weekend = FALSE)
 ```
